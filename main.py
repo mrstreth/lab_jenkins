@@ -6,7 +6,7 @@ import classes_error as Error
 import datetime
 import random as rnd
 
-version = 1.0
+version = 1.2
 name_database = 'database.db'
 
 db = SqliteDatabase(name_database)
@@ -31,7 +31,7 @@ class ODDERS(BaseModel):
     """Таблица ODDERS"""
     
     ID = PrimaryKeyField()
-    CLIENT = ForeignKeyField(CLIENTS)
+    CLIENT = ForeignKeyField(CLIENTS,backref='client')
     DATE = DateTimeField(default=datetime.datetime.today())
     AMOUNT = IntegerField()
     DESCRIPTION = CharField(max_length=100)
