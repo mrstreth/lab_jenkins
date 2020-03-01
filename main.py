@@ -6,7 +6,7 @@ import classes_error as Error
 import datetime
 import random as rnd
 
-version = 0.6
+version = 1.0
 name_database = 'database.db'
 
 db = SqliteDatabase(name_database)
@@ -17,27 +17,34 @@ class BaseModel(Model):
                 
 class CLIENTS(BaseModel):
     """Таблица CLIENTS"""
+    
     ID = PrimaryKeyField()
     NAME = CharField(max_length=50)
     CITY = CharField(max_length=50)
     ADDRESS = CharField(max_length=50)
+    
     class Meta:
         db_table = 'clients'
+        order_by = ('ID',)
                 
 class ODDERS(BaseModel):
     """Таблица ODDERS"""
+    
     ID = PrimaryKeyField()
     CLIENT = ForeignKeyField(CLIENTS)
-    DATE = DateTimeField(default=datetime.datetime.now())
+    DATE = DateTimeField(default=datetime.datetime.today())
     AMOUNT = IntegerField()
-    DESCRIPTION = CharField(max_length=100)    
+    DESCRIPTION = CharField(max_length=100)
+    
     class Meta:
         db_table = 'odders'
+        order_by = ('ID',)
 
 if __name__ == '__main__':
 
     if len(sys.argv) == 1 or sys.argv[1] == '--help':
         """Вызов справки"""
+        
         if not os.path.exists('doc.txt'):
             raise Error.NotFoundDocFile('Файл doc.txt не найден')
         try:
@@ -50,10 +57,12 @@ if __name__ == '__main__':
 
     elif len(sys.argv) == 2 and sys.argv[1] == '--version' or sys.argv[1] == '-v':
         """Показать версию программы"""
+        
         print(f'{version}')
         
     elif len(sys.argv) == 2 and sys.argv[1] == 'init':
         """Инициализация БД (создание пустой)"""
+        
         if os.path.exists(name_database):
             os.remove(name_database)
         
@@ -66,6 +75,7 @@ if __name__ == '__main__':
         
     elif len(sys.argv) == 2 and sys.argv[1] == 'fill':
         """Заполнение случайными записями (10)"""
+        
         try:
             db.connect()
             for i in range(10):
@@ -75,11 +85,27 @@ if __name__ == '__main__':
             print(str(px))
             
     elif len(sys.argv) == 3 and sys.argv[1] == 'show':
-        A = ['CLIENTS','ODDERS']
-        if sys.argv[2].upper() in A:
-            print('показать')
-        else:
+        """Показать таблицу по имени"""
+        
+        TABLES_NAME = ['CLIENTS','ODDERS']
+        if sys.argv[2].upper() not in TABLES_NAME:
             raise Error.TableNameError('Не существует такой таблицы в БД')
+        try:
+            db.connect()
+            if sys.argv[2].upper()=='CLIENTS':
+                print('--------TABLES CLIENTS--------')
+                print(f' ID\tNAME\tCITY\tADDRESS')
+                for row in CLIENTS.select():
+                    print(f' {row.ID}\t{row.NAME}\t{row.CITY}\t{row.ADDRESS}')
+
+            if sys.argv[2].upper()=='ODDERS':
+                print('--------TABLES ODDERS--------')
+                print(f' ID\tCLIENT_id\tDATE\t\t\tAMOUNT\tDESCRIPTION')
+                for row in ODDERS.select():
+                    print(f' {row.ID}\t{row.CLIENT_id}\t{row.DATE}\t{row.AMOUNT}\t{row.DESCRIPTION}')
+                
+        except peewee.InternalError as px:
+            print(str(px))
 
     else:
         raise Error.ArgsInputError('Неправильный ввод аргументов программы')
