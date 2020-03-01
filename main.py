@@ -16,7 +16,7 @@ class BaseModel(Model):
         database = db
                 
 class CLIENTS(BaseModel):
-    """Таблица CLIENTS"""
+    """Table CLIENTS"""
     
     ID = PrimaryKeyField()
     NAME = CharField(max_length=50)
@@ -28,7 +28,7 @@ class CLIENTS(BaseModel):
         order_by = ('ID',)
                 
 class ODDERS(BaseModel):
-    """Таблица ODDERS"""
+    """Table ODDERS"""
     
     ID = PrimaryKeyField()
     CLIENT = ForeignKeyField(CLIENTS,backref='client')
@@ -43,25 +43,25 @@ class ODDERS(BaseModel):
 if __name__ == '__main__':
 
     if len(sys.argv) == 1 or sys.argv[1] == '--help':
-        """Вызов справки"""
+        """doc"""
         
         if not os.path.exists('doc.txt'):
-            raise Error.NotFoundDocFile('Файл doc.txt не найден')
+            raise Error.NotFoundDocFile('File doc.txt not found')
         try:
             file_doc = open('doc.txt')
             for line in file_doc:
                 print(line)
             file_doc.close()
         except:
-            raise Error.OpenDocFileError('Не удалось открыть doc.txt')
+            raise Error.OpenDocFileError('Failed to open doc.txt')
 
     elif len(sys.argv) == 2 and sys.argv[1] == '--version' or sys.argv[1] == '-v':
-        """Показать версию программы"""
+        """Show version"""
         
         print(f'{version}')
         
     elif len(sys.argv) == 2 and sys.argv[1] == 'init':
-        """Инициализация БД (создание пустой)"""
+        """init DB (empty)"""
         
         if os.path.exists(name_database):
             os.remove(name_database)
@@ -74,7 +74,7 @@ if __name__ == '__main__':
             print(str(px))
         
     elif len(sys.argv) == 2 and sys.argv[1] == 'fill':
-        """Заполнение случайными записями (10)"""
+        """fill DB (10 row)"""
         
         try:
             db.connect()
@@ -85,11 +85,11 @@ if __name__ == '__main__':
             print(str(px))
             
     elif len(sys.argv) == 3 and sys.argv[1] == 'show':
-        """Показать таблицу по имени"""
+        """Show table for name"""
         
         TABLES_NAME = ['CLIENTS','ODDERS']
         if sys.argv[2].upper() not in TABLES_NAME:
-            raise Error.TableNameError('Не существует такой таблицы в БД')
+            raise Error.TableNameError('There is no such table in the database')
         try:
             db.connect()
             if sys.argv[2].upper()=='CLIENTS':
@@ -108,4 +108,4 @@ if __name__ == '__main__':
             print(str(px))
 
     else:
-        raise Error.ArgsInputError('Неправильный ввод аргументов программы')
+        raise Error.ArgsInputError('Incorrect input of program arguments'')
