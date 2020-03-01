@@ -1,6 +1,8 @@
 import sys
+import os.path
+import peewee
 
-version = 0.1
+version = 0.2
 
 class BaseError(Exception):
     """Определение собственных классов ошибок"""
@@ -18,10 +20,26 @@ class TableNameError(BaseError):
     """Не существует такой таблицы в БД"""
     pass
 
+class NotFoundDocFile(BaseError):
+    """Файл doc.txt не найден"""
+    pass
+
+class OpenDocFileError(BaseError):
+    """Не удалось открыть doc.txt"""
+    pass
+
 if __name__ == '__main__':
 
-    if len(sys.argv) == 1:
-        print('документация')
+    if len(sys.argv) == 1 or sys.argv[1] == '--help':
+        if not os.path.exists('doc.txt'):
+            raise NotFoundDocFile('Файл doc.txt не найден')
+        try:
+            file_doc = open('doc.txt')
+            for line in file_doc:
+                print(line)
+            file_doc.close()
+        except:
+            raise OpenDocFileError('Не удалось открыть doc.txt')
 
     elif len(sys.argv) == 2 and sys.argv[1] == '--version' or sys.argv[1] == '-v':
         print(f'{version}')
