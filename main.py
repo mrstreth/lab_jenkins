@@ -108,4 +108,4 @@ if __name__ == '__main__':
             print(str(px))
 
     else:
-        raise Error.ArgsInputError('Incorrect input of program arguments'')
+        raise Error.ArgsInputError('Incorrect input of program arguments')
