@@ -5,7 +5,9 @@
 properties([disableConcurrentBuilds()])
 
 pipeline { 
-    agent any 
+    agent {
+	label 'master'
+	}
     options {
 	buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
         timestamps()	
@@ -15,7 +17,7 @@ pipeline {
             steps {
                 sh 'python3 -m pip install -r requirements.txt'
                 sh 'python3 -m pytest -v --junitxml=report.xml'
-            }
+	    }
         }
         stage("Report errors") {
             steps {
