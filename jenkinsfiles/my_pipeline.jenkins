@@ -1,0 +1,25 @@
+#!groovy
+//посмотрел код? с тебя конфета
+//покорми меня я голодный :О
+
+properties([disableConcurentBuilds()])
+
+pipeline { 
+    agent any 
+    options {
+        skipStagesAfterUnstable()
+    }
+    stages {
+        stage('Install dist and testing'){
+            steps {
+                sh 'python3 -m pip install -r requirements.txt'
+                sh 'python3 -m pytest -v --junitxml=report.xml'
+            }
+        }
+        stage('Report errors') {
+            steps {
+                junit 'reports/**/*.xml' 
+            }
+        }
+    }
+}
