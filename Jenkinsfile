@@ -1,7 +1,3 @@
-#!groovy
-//посмотрел код? с тебя конфета
-//покорми меня я голодный :О
-
 properties([disableConcurrentBuilds()])
 
 pipeline { 
