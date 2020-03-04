@@ -2,21 +2,22 @@
 //посмотрел код? с тебя конфета
 //покорми меня я голодный :О
 
-properties([disableConcurentBuilds()])
+properties([disableConcurrentBuilds()])
 
 pipeline { 
     agent any 
     options {
-        skipStagesAfterUnstable()
+	buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()	
     }
     stages {
-        stage('Install dist and testing'){
+        stage("Install dist and testing"){
             steps {
                 sh 'python3 -m pip install -r requirements.txt'
                 sh 'python3 -m pytest -v --junitxml=report.xml'
             }
         }
-        stage('Report errors') {
+        stage("Report errors") {
             steps {
                 junit 'reports/**/*.xml' 
             }
