@@ -1,16 +1,23 @@
+#!groovy
+properties([disableConcurrentBuilds()])
+
 pipeline {
-	agent any
-	options {
-		timestamps()
-		}
-	stages {
-		stage("Install dist and testing"){
-			steps {
-				git 'https://github.com/mrstreth/lab_jenkins.git'
-				sh 'pip3 install -r requirements.txt'
-				sh 'pytest -v --junitxml=report.xml'
-				junit 'reports/**/*.xml' 
-				}
-		}
-	}
+    agent any
+    options {
+        timestamps()
+    }
+    stages {
+        stage("First step") {
+            steps {
+                sh 'pip3 install -r requirements.txt'
+            }
+        }
+        stage("Second step") {
+            steps {
+                sh 'python3 -m pytest -v --junitxml=report.xml'
+				junit '*.xml'
+            }
+        }
+    }
 }
+
