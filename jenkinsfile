@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage("First step") {
             steps {
-                //git 'https://github.com/elenpetrovich/Repository_for_Jenkins.git'
+                //git 'https://github.com/mrstreth/.git'
                 sh 'pip3 install -r requirements.txt'
             }
         }
