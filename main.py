@@ -83,8 +83,10 @@ if __name__ == '__main__':
         try:
             db.connect()
             for i in range(10):
-                CLIENTS.create(NAME=f'NAME{i+1}',CITY=f'CITY{i+1}',ADDRESS=f'ADDRESS{i+1}')
-                ODDERS.create(CLIENT=rnd.randint(0,10),AMOUNT=i+1,DESCRIPTION=f'test')
+                #CLIENTS.create(NAME='NAME{i+1}',CITY=f'CITY{i+1}',ADDRESS=f'ADDRESS{i+1}')
+                CLIENTS.create(NAME='NAME'+str(i+1),CITY='CITY'+str(i+1),ADDRESS='ADDRESS'+str(i+1))
+                #ODDERS.create(CLIENT=rnd.randint(0,10),AMOUNT=i+1,DESCRIPTION=f'test')
+                ODDERS.create(CLIENT=rnd.randint(0,10),AMOUNT=i+1,DESCRIPTION='test')
         except peewee.InternalError as px:
             print(str(px))
             
