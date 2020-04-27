@@ -6,7 +6,10 @@ import classes_error as Error
 import datetime
 import random as rnd
 
-version = 1.2
+version = 1.3
+version_description = '''
+python 3.5 works
+'''
 name_database = 'database.db'
 
 db = SqliteDatabase(name_database)
@@ -58,7 +61,8 @@ if __name__ == '__main__':
     elif len(sys.argv) == 2 and sys.argv[1] == '--version' or sys.argv[1] == '-v':
         """Show version"""
         
-        print(f'{version}')
+        #print(f'{version}')
+        print(version)
         
     elif len(sys.argv) == 2 and sys.argv[1] == 'init':
         """init DB (empty)"""
@@ -94,15 +98,17 @@ if __name__ == '__main__':
             db.connect()
             if sys.argv[2].upper()=='CLIENTS':
                 print('--------TABLES CLIENTS--------')
-                print(f' ID\tNAME\tCITY\tADDRESS')
+                print(' ID\tNAME\tCITY\tADDRESS')
                 for row in CLIENTS.select():
-                    print(f' {row.ID}\t{row.NAME}\t{row.CITY}\t{row.ADDRESS}')
+                    #print(f' {row.ID}\t{row.NAME}\t{row.CITY}\t{row.ADDRESS}')
+                    print(row.ID,'\t',row.NAME,'\t',row.CITY,'\t',row.ADDRESS)
 
             if sys.argv[2].upper()=='ODDERS':
                 print('--------TABLES ODDERS--------')
-                print(f' ID\tCLIENT_id\tDATE\t\t\tAMOUNT\tDESCRIPTION')
+                print(' ID\tCLIENT_id\tDATE\t\t\tAMOUNT\tDESCRIPTION')
                 for row in ODDERS.select():
-                    print(f' {row.ID}\t{row.CLIENT_id}\t{row.DATE}\t{row.AMOUNT}\t{row.DESCRIPTION}')
+                    #print(f' {row.ID}\t{row.CLIENT_id}\t{row.DATE}\t{row.AMOUNT}\t{row.DESCRIPTION}')
+                    print(row.ID,'\t',row.CLIENT_id,'\t',row.DATE,'\t',row.AMOUNT,'\t',row.DESCRIPTION)
                 
         except peewee.InternalError as px:
             print(str(px))
